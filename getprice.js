@@ -41,7 +41,7 @@ var getPrice = (webUrl)=>{
 						getName = getName.replace(/\n/g,'').trim();
 					}
 					var getPrice = $('#a-page').find('#priceblock_ourprice').contents()[1].data;
-					console.log(getPrice);
+					//console.log(getPrice);
 					if(getPrice){
 						getPrice = getPrice.trim();
 					}					
