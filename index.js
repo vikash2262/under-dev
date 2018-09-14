@@ -5,29 +5,20 @@ const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 
 const getProductPrice = require("./getprice");
-const db = require("./mongodb-connect");
-const dbUrl = 'mongodb://localhost:27017';
-const dbName = 'ScrapingApp';
+const dbQuery = require("./db-queries");
 
 const app = express();
-var urlencodedParser = bodyParser.urlencoded({extended: false});
 
+var urlencodedParser = bodyParser.urlencoded({extended: false});
+var dba;
 app.engine('handlebars', exphbs({defaultLayout : 'main'}));
 app.set('view engine','handlebars');
 app.set('port',3000);
 
 app.use(express.static(__dirname + '/public'));
 
-db.connect('mongodb://localhost:27017',(err) =>{
-console.log(err);
-	if(err){
-		console.log('Unable to connect to Mongo Server');
-		process.exit(1);
-	}
-	app.listen(app.get('port'),() =>{
-		console.log('Connected to Mongo Server');
-		console.log(`App is up and running at port ${app.get('port')}`);
-	});
+app.listen(app.get('port'),() =>{
+	console.log(`App is up and running at port ${app.get('port')}`);
 });
 
 app.get('/', (req,res) => {
@@ -36,40 +27,26 @@ app.get('/', (req,res) => {
 
 ///////////
 //https://wesleytsai.io/2015/08/02/mongodb-connection-pooling-in-nodejs/
-//const MongoClient = require('mongodb').MongoClient;
-//const assert = require('assert');
-
-// Connection URL
-//const url = 'mongodb://localhost:27017';
-
-// Database Name
-//const dbName = 'scraping';
-
-// Use connect method to connect to the server
-/*MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-//db.createCollection('test');
-console.log(db);
-});*/
-
 ///////////
 
-app.post('/',urlencodedParser,(req,res) => {
+//dbQuery.newPriceTrack(db,{userName: 'vikash', email: 'vikash.jal.mca@gmail.com', productSKU: '123456'});
 
+app.post('/',urlencodedParser,(req,res) => {
+		
 	var productUrl = req.body['product-url'];
 
 	getProductPrice.getPrice(productUrl).then((result) =>{
-				
+		
+		//Insert into DB
+		dbQuery.newPriceTrack({userName: 'vikash', email: 'vikash.jal.mca@gmail.com', productSKU: '123456'});
+		
 		res.render('home', {
 			message: 'Your request for this URL is successfully saved. You will be notified'
-		});		
+		});
 	},(errorMessage) => {
 		res.render('home', {
-			message: 'Something went Wrong.Please try again later!'	
+			message: errorMessage
 		});
 	});
 });
+

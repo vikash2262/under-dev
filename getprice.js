@@ -16,16 +16,31 @@ var getPrice = (webUrl)=>{
 
 				if(q.host === 'www.flipkart.com'){
 					
-					productId = q.query.pid;
 					var $ = cheerio.load(body);
-					var getName = $('._3e7xtJ').find('._35KyD6').html();
-					if(getName){
-						getName = stripHtmlComments(getName.trim());
+					
+					//Get Product unique ID
+					productId = q.query.pid;
+					
+					//Get Product Name
+					try{
+						var getName = $('._3e7xtJ').find('._35KyD6').html();
+						if(getName){
+							getName = stripHtmlComments(getName.trim());
+						}
+					}catch(err){
+						reject("Some problem occured.Please try again later");
 					}
-					var getPrice = $('._3e7xtJ').find('._3qQ9m1').html();
-					if(getPrice){
-						getPrice = getPrice.replace('&#x20B9;','');
+					
+					//Get Product Price
+					try{
+						var getPrice = $('._3e7xtJ').find('._3qQ9m1').html();
+						if(getPrice){
+							getPrice = getPrice.replace('&#x20B9;','');
+						}
+					}catch(err){
+						reject("Some problem occured.Please try again later");
 					}
+					
 					resolve({
 						site: 'flipkart',
 						productId: productId,
@@ -35,16 +50,29 @@ var getPrice = (webUrl)=>{
 				}else if(q.host === 'www.amazon.in'){
 										
 					var $ = cheerio.load(body);
-					var productId = $('#a-page').find('#prodDetails .col2 table tbody tr td:nth-child(2)').html();
+					
+					//Get Product unique ID
+					try{
+						var productId = $('#a-page').find('#prodDetails .col2 table tbody tr td:nth-child(2)').html();
+					}catch(err){
+						reject("Some problem occured.Please try again later");						
+					}
+					
+					//Get Product Title
 					var getName = $('#a-page').find('#productTitle').html();
 					if(getName){
 						getName = getName.replace(/\n/g,'').trim();
 					}
-					var getPrice = $('#a-page').find('#priceblock_ourprice').contents()[1].data;
-					//console.log(getPrice);
-					if(getPrice){
+					
+					//Get Product Price
+					try{
+						var getPrice = $('#a-page').find('#priceblock_ourprice').contents()[1].data;
 						getPrice = getPrice.trim();
-					}					
+					}catch(err){
+						getDivContent = $('#a-page').find('#priceblock_ourprice').html();
+						console.log(getDivContent);
+						reject("Some problem occured.Please try again later");
+					}
 					resolve({
 						site: 'amazon',
 						productId: productId,						
