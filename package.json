@@ -12,13 +12,16 @@
     "assert": "^1.4.1",
     "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",
+    "email-validator": "^2.0.4",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
+    "greenlock-express": "^2.4.6",
     "hbs": "^4.0.1",
     "mongodb": "^3.1.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "strip-comments": "^1.0.2",
-    "strip-html-comments": "^1.0.0"
+    "strip-html-comments": "^1.0.0",
+    "valid-url": "^1.0.9"
   }
 }

@@ -3,13 +3,14 @@ const cheerio = require('cheerio');
 const url = require('url');
 const stripHtmlComments = require('strip-html-comments');
 
-var getPrice = (webUrl)=>{
+var getProductdetails = (webUrl)=>{
 	
 	return new Promise((resolve,reject) => {
 		
 		request(webUrl, (error, reponse, body) => {
 			if(error){
 				reject("Unable to connect to servers now.Please try again later");
+				//console.log(error);
 			}else{
 				
 				q = url.parse(webUrl, true);
@@ -70,7 +71,7 @@ var getPrice = (webUrl)=>{
 						getPrice = getPrice.trim();
 					}catch(err){
 						getDivContent = $('#a-page').find('#priceblock_ourprice').html();
-						console.log(getDivContent);
+						console.log(err);
 						reject("Some problem occured.Please try again later");
 					}
 					resolve({
@@ -85,4 +86,4 @@ var getPrice = (webUrl)=>{
 	});
 };
 
-module.exports.getPrice = getPrice;
+module.exports.getProductdetails = getProductdetails;
