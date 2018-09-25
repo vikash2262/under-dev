@@ -55,6 +55,11 @@ var getProductdetails = (webUrl)=>{
 					//Get Product unique ID
 					try{
 						var productId = $('#a-page').find('#prodDetails .col2 table tbody tr td:nth-child(2)').html();
+						if(!productId){
+							var canonicalTag = $('link[rel="canonical"]');
+							getAmazonurl = canonicalTag.attr('href');
+							productId = getAmazonurl.split("/").pop();
+						}						
 					}catch(err){
 						reject("Some problem occured.Please try again later");						
 					}
@@ -68,7 +73,7 @@ var getProductdetails = (webUrl)=>{
 					//Get Product Price
 					try{
 						var getPrice = $('#a-page').find('#priceblock_ourprice').contents()[1].data;
-						getPrice = getPrice.trim();
+						getPrice = getPrice.trim();console.log(getPrice);
 					}catch(err){
 						getDivContent = $('#a-page').find('#priceblock_ourprice').html();
 						console.log(err);
