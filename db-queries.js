@@ -40,3 +40,25 @@ exports.newPriceTrack = (data,formData) => {
 		}
 	});
 }
+
+exports.getUserlist = () => {
+		return new Promise((resolve,reject) =>{
+			MongoClient.connect('mongodb://localhost:27017',{ useNewUrlParser: true },(err,client) => {
+
+				//assert.equal(null, err, 'Unable to connect to Mongo Server');
+				if(err){
+					reject('Unable to connect to Mongo Server');
+				}
+				console.log("Connected successfully to server");
+				let db = client.db('ScrapingApp');
+
+				db.collection('UserInfo').find({}).toArray((err, response) => {
+				if(err){
+					reject('Unable to fetch user data');
+				}
+				resolve(response);
+			});
+			client.close();	
+		});		
+	});
+}
