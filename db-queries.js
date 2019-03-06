@@ -1,13 +1,21 @@
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
+let UserInfo = require('./db-schema');
 
-const dbUrl = 'mongodb://localhost:27017';
-const dbName = 'ScrapingApp';
+var User = new UserInfo({userName: 'vik',email:'vik@gmail.com'});
+			User.save((err, response) => {
+				console.log(UserInfo);
+			if(err){ throw err;
+				console.log(err);
+			}else{
+				console.log("Document Save Done");
+			}
 
-inserUserInfo = (db,formData) => {
+			});
+console.log('ccc');
+/*inserUserInfo = (db,formData) => {
 	return new Promise((resolve,reject) =>{
-		
-			db.collection('UserInfo').insertOne({userName: formData.name,email:formData.email}, (err, response) => {
+
+			var User = new UserInfo({userName: formData.name,email:formData.email});
+			User.save((err, response) => {
 				if(err){
 					reject('UserInfo Not Inserted');
 				}
@@ -16,49 +24,8 @@ inserUserInfo = (db,formData) => {
 			});		
 	});
 }
+
 exports.newPriceTrack = (data,formData) => {
 	
-	MongoClient.connect('mongodb://localhost:27017',{ useNewUrlParser: true },(err,client) => {
 
-		assert.equal(null, err, 'Unable to connect to Mongo Server');
-
-		console.log("Connected successfully to server");
-		let db = client.db('ScrapingApp');
-
-		if(data){
-			
-			inserUserInfo(db,formData,data).then( (userRecordID)=>{
-				console.log('user ID '+data);
-				db.collection('productInfo').insertOne({userID: userRecordID,url:formData.producturl,websiteName: data.site,productID: data.productId,price: data.price}, (err, response) => {
-				assert.equal(null, err, 'Record Not Inserted');
-				
-				client.close();
-				});
-			}),(errorMessage) =>{
-				console.log(`Product Info not inserted. Error {$errorMessage}`);
-			}
-		}
-	});
-}
-
-exports.getUserlist = () => {
-		return new Promise((resolve,reject) =>{
-			MongoClient.connect('mongodb://localhost:27017',{ useNewUrlParser: true },(err,client) => {
-
-				//assert.equal(null, err, 'Unable to connect to Mongo Server');
-				if(err){
-					reject('Unable to connect to Mongo Server');
-				}
-				console.log("Connected successfully to server");
-				let db = client.db('ScrapingApp');
-
-				db.collection('UserInfo').find({}).toArray((err, response) => {
-				if(err){
-					reject('Unable to fetch user data');
-				}
-				resolve(response);
-			});
-			client.close();	
-		});		
-	});
-}
+}*/

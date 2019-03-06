@@ -19,12 +19,15 @@
     "express-session": "^1.15.6",
     "greenlock-express": "^2.4.6",
     "hbs": "^4.0.1",
+    "https-proxy-agent": "^2.2.1",
     "mongodb": "^3.1.4",
+    "mongoose": "^5.4.17",
     "node-cron": "^2.0.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "strip-comments": "^1.0.2",
     "strip-html-comments": "^1.0.0",
-    "valid-url": "^1.0.9"
+    "valid-url": "^1.0.9",
+    "validator": "^10.11.0"
   }
 }

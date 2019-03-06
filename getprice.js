@@ -2,13 +2,18 @@ const request = require('request');
 const cheerio = require('cheerio');
 const url = require('url');
 const stripHtmlComments = require('strip-html-comments');
+var HttpsProxyAgent = require('https-proxy-agent');
+
+var proxy = 'http://103.87.170.237:8080';
+var agent = new HttpsProxyAgent(proxy);
 
 var getProductdetails = (webUrl)=>{
 	
 	return new Promise((resolve,reject) => {
 		
-		request(webUrl, (error, reponse, body) => {
+		request({uri: webUrl,agent: agent,method: "POST",headers: {'content-type': 'application/x-www-form-urlencoded'},	agent: agent,timeout: 10000,maxRedirects: 10}, (error, reponse, body) => {
 			if(error){
+				console.log(error);
 				reject("Unable to connect to servers now.Please try again later");
 			}else{
 				
@@ -54,13 +59,17 @@ var getProductdetails = (webUrl)=>{
 					//Get Product unique ID
 					try{
 						var productId = $('#a-page').find('#prodDetails .col2 table tbody tr td:nth-child(2)').html();
-						if(!productId){
-							var canonicalTag = $('link[rel="canonical"]');
-							getAmazonurl = canonicalTag.attr('href');
-							productId = getAmazonurl.split("/").pop();
+						if(productId){
+							if(!productId){
+								var canonicalTag = $('link[rel="canonical"]');
+								getAmazonurl = canonicalTag.attr('href');
+								productId = getAmazonurl.split("/").pop();
+							}
+						}else{
+							productId = $('#faddAsin').html();
 						}						
 					}catch(err){
-						reject("Some problem occured.Please try again later");						
+						reject("Some problem occured while getting productID.Please try again later");						
 					}
 					
 					//Get Product Title
@@ -71,12 +80,13 @@ var getProductdetails = (webUrl)=>{
 					
 					//Get Product Price
 					try{
-						var getPrice = $('#a-page').find('#priceblock_ourprice').contents()[1].data;
-						getPrice = getPrice.trim();
+						//var getPrice = $('#a-page').find('#priceblock_ourprice').contents()[1].data;
+						var getPrice = $('#priceblock_ourprice').find('.currencyINR').remove().html();
+						//getPrice = getPrice.trim();
 					}catch(err){
-						getDivContent = $('#a-page').find('#priceblock_ourprice').html();
-
-						reject("Some problem occured.Please try again later");
+						//var getDivContent = $('#priceblock_ourprice').html();
+						//console.log(err);
+						reject("Some problem occured while getting product price.Please try again later");
 					}
 					resolve({
 						site: 'amazon',
