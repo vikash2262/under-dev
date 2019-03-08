@@ -1,14 +1,14 @@
 let mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
 const server = 'localhost';
 const database = 'ScrapingApp';
 
-class Database{
+//mongoose.promise = global.promise;
+
+mongoose.connect(`mongodb://${server}/${database}`,{ useNewUrlParser: true });
+/*class Database{
 	constructor(){
 		this.connect();
 	}
-
 	connect(){
 		mongoose.connect(`mongodb://${server}/${database}`).then( () =>{
 			console.log('DB Connection success');
@@ -16,11 +16,36 @@ class Database{
 			console.log('DB Connection Fail');
 		});
 	}
-}
+}*/
 
-var UserSchema = new Schema({
-	userName : String,
-	email : String
+var UserModel = new mongoose.model('user',{
+	userName : {
+		type : String,
+	},
+	email : {
+		type : String,
+	}
 });
 
-module.exports = mongoose.model('UserInfo',UserSchema);
+var ProductModel = new mongoose.model('product',{
+	userID : {
+		type : mongoose.Schema.Types.ObjectId,
+	},
+	url : {
+		type : String,
+	},
+	websiteName : {
+		type : String,
+	},
+	productID : {
+		type : String,
+	},
+	price : {
+		type : String,
+	}
+});
+
+module.exports = {
+	UserInfo : UserModel,
+	ProductModel : ProductModel
+}

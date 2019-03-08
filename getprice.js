@@ -4,7 +4,7 @@ const url = require('url');
 const stripHtmlComments = require('strip-html-comments');
 var HttpsProxyAgent = require('https-proxy-agent');
 
-var proxy = 'http://103.87.170.237:8080';
+var proxy = 'http://36.81.2.206:31281';
 var agent = new HttpsProxyAgent(proxy);
 
 var getProductdetails = (webUrl)=>{
