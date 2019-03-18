@@ -1,9 +1,19 @@
-let UserInfo = require('./db-schema');
+const UserInfo = require('./db-schema');
 
-var User = new UserInfo({userName: 'vik',email:'vik@gmail.com'});
+var User = new UserInfo();
+User.userName = "Rakesh";
+User.email = "raka@gmail.com";
+UserInfo.findOne({name : "rakesh"},(errr,dataa)=>{
+	if(errr){
+		console.log('error');
+	}else{
+		console.log('data');
+	}
+});
+
+var data = {userName: 'vik',email:'vik@gmail.com'};
 			User.save((err, response) => {
-				console.log(UserInfo);
-			if(err){ throw err;
+			if(err){ //throw err;
 				console.log(err);
 			}else{
 				console.log("Document Save Done");
