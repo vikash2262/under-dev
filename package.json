@@ -28,6 +28,6 @@
     "strip-comments": "^1.0.2",
     "strip-html-comments": "^1.0.0",
     "valid-url": "^1.0.9",
-    "validator": "^10.11.0"
+    "validator": "^13.7.0"
   }
 }
